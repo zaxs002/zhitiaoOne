@@ -222,10 +222,12 @@ def add_route(app, fn):
         fn = asyncio.coroutine(fn)
     logging.info(
         '添加路由 %s %s => %s(%s)' % (method, path, fn.__name__, ', '.join(inspect.signature(fn).parameters.keys())))
+    app._auth[method + path] = getattr(fn, '__auth__', True)
     app.router.add_route(method, path, RequestHandler(app, fn))
 
 
 def add_routes(app, module_name):
+    app._auth = {}
     n = module_name.rfind('.')
     if n == -1:
         mod = __import__(module_name, globals(), locals())

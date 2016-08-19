@@ -26,7 +26,7 @@ async def logger_factory(app, handler):
 async def auth_factory(app, handler):
     async def auth(request):
         logging.info('检查是否认证: %s %s' % (request.method, request.path))
-        if not request.path == "/login":
+        if app._auth[request.method + request.match_info.route.resource._formatter]:
             token = request.headers.get('TOKEN')
             if token:
                 username = redis.get(token)
