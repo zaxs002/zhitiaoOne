@@ -27,7 +27,7 @@ def url_for(request, endpoint, **values):
         return request.scheme + '://' + request.host + '/'.join(path)
     return None
 
-
+@Auth(False)
 @post('/login')
 async def login(request, *, username, password):
     if username == 'aaa' and password == '123':
